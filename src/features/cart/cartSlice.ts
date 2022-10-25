@@ -22,10 +22,17 @@ const cartSlice = createSlice({
     removeFromCart(state, action: PayloadAction<string>) {
       delete state.items[action.payload];
     },
+    updateQuantity(
+      state,
+      action: PayloadAction<{ itemId: string; quantity: number }>
+    ) {
+      const { itemId, quantity } = action.payload;
+      state.items[itemId] = quantity;
+    },
   },
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const getMemoizedNumItems = createSelector(

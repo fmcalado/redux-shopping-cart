@@ -2,13 +2,18 @@ import React from "react";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import styles from "./Cart.module.css";
-import { getTotalPrice, removeFromCart } from "./cartSlice";
+import { getTotalPrice, removeFromCart, updateQuantity } from "./cartSlice";
 
 export function Cart() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.products.products);
   const items = useAppSelector((state) => state.cart.items);
   const totalPrice = useAppSelector(getTotalPrice);
+
+  function onQuantityChange(e: React.FocusEvent<HTMLInputElement>, id: string) {
+    const quantity = Number(e.target.value) || 0;
+    dispatch(updateQuantity({ itemId: id, quantity }));
+  }
 
   return (
     <main className="page">
@@ -31,6 +36,7 @@ export function Cart() {
                   type="text"
                   className={styles.input}
                   defaultValue={quantity}
+                  onBlur={(e) => onQuantityChange(e, id)}
                 />
               </td>
               <td>${products[id].price}</td>
